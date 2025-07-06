@@ -343,48 +343,73 @@ footer {
 }
 
 /* Responsive adjustments */
+/* For screens smaller than 768px (common tablet breakpoint) */
 @media (max-width: 768px) {
     body {
-        padding-top: 12rem; /* Adjust padding for smaller screens if header wraps */
+        /* Adjust padding-top to accommodate fixed header that might wrap */
+        padding-top: 15rem; /* Increased padding to prevent content from being hidden */
     }
     header {
-        flex-direction: column;
-        padding-bottom: 1rem;
-    }
-    .search-bar-container, .zone-selector-container {
-        width: 95%;
-        max-width: none; /* Allow full width on small screens */
-    }
-    .theme-toggle-button, .geolocation-status {
-        position: static; /* Remove fixed positioning */
-        margin-top: 0.5rem;
-    }
-    .theme-toggle-button {
-        order: -1; /* Place it at the top of the flex column */
-    }
-    .geolocation-status {
-        order: 1; /* Place it after the title */
+        flex-direction: column; /* Stack header items vertically */
+        padding-bottom: 1rem; /* Add some padding at the bottom of the header */
+        height: auto; /* Allow header height to adjust based on content */
     }
     header h1 {
-        font-size: 1.8rem;
+        font-size: 1.8rem; /* Slightly smaller title for tablets */
+        margin-bottom: 0.25rem;
+    }
+    .search-bar-container, .zone-selector-container {
+        width: 95%; /* Make search bar and zone selector wider */
+        max-width: none; /* Remove max-width constraint */
+        flex-wrap: wrap; /* Allow items to wrap if needed */
+        justify-content: center; /* Center items when wrapped */
+    }
+    .search-input-wrapper {
+        flex-basis: 100%; /* Input wrapper takes full width */
+        margin-bottom: 0.5rem; /* Space below input before search button */
+    }
+    .search-button {
+        flex-basis: calc(50% - 0.25rem); /* Make search button take half width */
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+    .clear-search-button {
+        right: 0.5rem; /* Keep clear button inside input */
+        font-size: 1rem;
+    }
+    .theme-toggle-button {
+        position: absolute; /* Keep it absolutely positioned for flexibility */
+        top: 0.5rem; /* Adjust top position */
+        right: 0.5rem; /* Adjust right position */
+        font-size: 1.5rem; /* Smaller emoji for smaller screens */
+    }
+    .geolocation-status {
+        position: absolute; /* Keep it absolutely positioned */
+        top: 0.5rem; /* Adjust top position */
+        left: 0.5rem; /* Adjust left position */
+        font-size: 0.8rem; /* Smaller font size */
     }
     .zone-button {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem; /* Smaller padding for zone buttons */
+        font-size: 0.9rem; /* Smaller font size for zone buttons */
+        flex: 1; /* Ensure they share space equally */
     }
     .container {
-        padding: 1rem;
-        margin: 0.5rem auto;
+        padding: 1rem; /* Smaller padding for main container */
+        margin: 0.5rem auto; /* Adjust margin */
+    }
+    .map-image {
+        margin-bottom: 1rem;
+    }
+    .location-item {
+        padding: 0.8rem;
+        margin-bottom: 0.8rem;
     }
     .location-item h3 {
-        font-size: 1.1rem;
+        font-size: 1.1rem; /* Smaller heading for location items */
     }
     .location-item p {
-        font-size: 0.85rem;
-    }
-    .button-styled {
-        padding: 0.7rem;
-        font-size: 0.9rem;
+        font-size: 0.85rem; /* Smaller paragraph for location items */
     }
     footer {
         font-size: 0.8rem;
@@ -392,25 +417,59 @@ footer {
     }
 }
 
+/* For screens smaller than 480px (common phone breakpoint) */
 @media (max-width: 480px) {
     body {
-        padding-top: 14rem; /* More padding for very small screens */
+        padding-top: 16rem; /* More padding for very small screens */
     }
     header h1 {
-        font-size: 1.5rem;
+        font-size: 1.5rem; /* Even smaller title for phones */
+    }
+    .search-bar-container {
+        flex-direction: column; /* Stack search input and button vertically */
+        align-items: stretch; /* Stretch items to full width */
+    }
+    .search-input-wrapper {
+        margin-bottom: 0.5rem; /* Space between input and search button */
     }
     .search-button {
-        padding: 0.6rem 0.8rem;
+        flex-basis: auto; /* Let button take natural width */
+        width: 100%; /* Make search button full width */
     }
-    .search-input {
-        padding-right: 2rem; /* Adjust space for clear button */
-    }
-    .clear-search-button {
-        right: 0.2rem;
-        font-size: 1rem;
+    .zone-selector-container {
+        flex-wrap: nowrap; /* Prevent zone buttons from wrapping too much */
+        overflow-x: auto; /* Allow horizontal scrolling if buttons are too wide */
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        justify-content: flex-start; /* Align to start when scrolling */
+        padding-bottom: 0.5rem; /* Add padding for scrollbar if present */
     }
     .zone-button {
-        padding: 0.3rem 0.6rem;
+        flex-shrink: 0; /* Prevent buttons from shrinking too much */
+        min-width: 80px; /* Ensure a minimum width for buttons */
+    }
+    .theme-toggle-button, .geolocation-status {
+        font-size: 1.2rem; /* Smaller emojis and text */
+        top: 0.25rem;
+        right: 0.25rem;
+        left: 0.25rem;
+    }
+    .geolocation-status {
+        top: 2.5rem; /* Adjust position relative to title */
+    }
+    .container {
+        padding: 0.75rem;
+    }
+    .location-item {
+        padding: 0.7rem;
+    }
+    .location-item h3 {
+        font-size: 1rem;
+    }
+    .location-item p {
         font-size: 0.8rem;
+    }
+    .button-styled {
+        padding: 0.6rem;
+        font-size: 0.85rem;
     }
 }
