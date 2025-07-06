@@ -353,7 +353,6 @@ footer {
         flex-basis: 100%; /* Input wrapper takes full width */
         margin-bottom: 0.5rem; /* Space below input before search button */
     }
-    /* Removed .search-button styles as it's no longer present */
     .clear-search-button {
         right: 0.5rem; /* Keep clear button inside input */
         font-size: 1rem;
@@ -368,7 +367,6 @@ footer {
         right: 0.5rem; /* Adjust right position */
         font-size: 1.5rem; /* Smaller emoji for smaller screens */
     }
-    /* Removed .geolocation-status styling as it's no longer displayed */
     .zone-button {
         padding: 0.4rem 0.8rem; /* Smaller padding for zone buttons */
         font-size: 0.9rem; /* Smaller font size for zone buttons */
@@ -412,7 +410,6 @@ footer {
     .search-input-wrapper {
         margin-bottom: 0.5rem; /* Space between input and search button */
     }
-    /* Removed .search-button styles as it's no longer present */
     .zone-selector-container {
         flex-wrap: nowrap; /* Prevent zone buttons from wrapping too much */
         overflow-x: auto; /* Allow horizontal scrolling if buttons are too wide */
@@ -429,7 +426,6 @@ footer {
         top: 0.25rem;
         right: 0.25rem;
     }
-    /* Removed .geolocation-status styling as it's no longer displayed */
     .container {
         padding: 0.75rem;
     }
