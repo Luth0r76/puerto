@@ -8,8 +8,454 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Link to external CSS file -->
-    <link rel="stylesheet" href="css/styles.css"> 
+    <style>
+        /* Define CSS Variables for themes */
+        :root {
+            /* Night Mode Colors (Default) */
+            --bg-color: #0a0f1c;
+            --text-color: #e6f0ff;
+            --header-bg: #001f3f;
+            --header-border: #0074D9;
+            --container-bg: #1e1e1e;
+            --location-item-bg: #1a1a1a;
+            --location-item-border: #0074D9;
+            --location-text-color: #bbb;
+            --button-gradient-start: #0074D9;
+            --button-gradient-end: #001f3f;
+            --button-border-color: #0074D9;
+            --button-shadow-color: rgba(0, 116, 217, 0.3);
+            --button-hover-gradient-start: #ff4136;
+            --button-hover-gradient-end: #85144b;
+            --button-hover-shadow-color: #ff4136;
+            --zone-heading-color: #0074D9;
+            --no-results-color: #ff4136;
+            --clear-button-color: #bbb;
+            --clear-button-hover-color: #e6f0ff;
+            --geolocation-status-color: #0074D9;
+            --zone-button-bg: #003366; /* Darker blue for inactive zone buttons */
+            --zone-button-active-bg: #0074D9; /* Brighter blue for active zone button */
+        }
+
+        /* Day Mode Colors */
+        body.day-mode {
+            --bg-color: #f0f4f8; /* Light blue-gray */
+            --text-color: #1a1a1a; /* Dark text */
+            --header-bg: #60a5fa; /* Lighter blue */
+            --header-border: #3b82f6;
+            --container-bg: #f8fafc; /* Light gray */
+            --location-item-bg: #edf2f7; /* Slightly darker light gray */
+            --location-item-border: #3b82f6;
+            --location-text-color: #4a5568; /* Darker gray for description */
+            --button-gradient-start: #3b82f6;
+            --button-gradient-end: #2563eb;
+            --button-border-color: #3b82f6;
+            --button-shadow-color: rgba(59, 130, 246, 0.3);
+            --button-hover-gradient-start: #ef4444;
+            --button-hover-gradient-end: #dc2626;
+            --button-hover-shadow-color: #ef4444;
+            --zone-heading-color: #2563eb;
+            --no-results-color: #ef4444;
+            --clear-button-color: #4a5568;
+            --clear-button-hover-color: #1a1a1a;
+            --geolocation-status-color: #2563eb;
+            --zone-button-bg: #93c5fd; /* Light blue for inactive zone buttons */
+            --zone-button-active-bg: #3b82f6; /* Brighter blue for active zone button */
+        }
+
+        /* Global styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding-bottom: 4rem; /* Add padding for the fixed footer */
+            /* Base padding-top for larger screens, adjusted in media queries */
+            padding-top: 10rem; 
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
+        }
+
+        /* Header styling */
+        header {
+            background-color: var(--header-bg);
+            color: var(--text-color);
+            border-bottom: 3px solid var(--header-border);
+            text-align: center;
+            padding: 1rem;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            position: fixed; /* Make header fixed */
+            top: 0;
+            left: 0;
+            z-index: 1000; /* Ensure it stays on top */
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .search-bar-container {
+            display: flex;
+            gap: 0.5rem;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-input-wrapper { /* New wrapper for input and clear button */
+            position: relative;
+            flex-grow: 1;
+        }
+
+        .search-input {
+            width: 100%; /* Take full width of its wrapper */
+            padding: 0.6rem 1rem;
+            padding-right: 2.5rem; /* Space for clear button */
+            border-radius: 0.25rem;
+            border: 2px solid var(--button-border-color);
+            background-color: var(--location-item-bg); /* Use location item bg for input */
+            color: var(--text-color);
+            font-size: 1rem;
+            outline: none;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: var(--location-text-color);
+        }
+
+        /* New style for the magnifying glass icon inside the input */
+        .search-icon-inside {
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--clear-button-color); /* Use clear button color for consistency */
+            font-size: 1.2rem;
+            pointer-events: none; /* Make it non-interactive so clicks pass through to input */
+            display: block; /* Shown by default when input is empty */
+        }
+
+        .clear-search-button {
+            position: absolute;
+            right: 0.5rem; /* Position inside the input field, same as search icon */
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--clear-button-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 0.2rem; /* Smaller padding for a tighter fit */
+            display: none; /* Hidden by default, shown when input has text */
+            transition: color 0.3s ease;
+        }
+
+        .clear-search-button:hover {
+            color: var(--clear-button-hover-color);
+        }
+
+        .theme-toggle-button {
+            background: none;
+            border: none;
+            font-size: 1.8rem; /* Larger emoji */
+            cursor: pointer;
+            color: var(--text-color); /* Use text color for emoji */
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .theme-toggle-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Removed .geolocation-status styling as it's no longer displayed */
+
+        .zone-selector-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem; /* Space below search bar */
+            width: 90%;
+            max-width: 400px;
+            justify-content: center;
+        }
+
+        .zone-button {
+            background-color: var(--zone-button-bg);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: 2px solid var(--header-border);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            flex: 1; /* Make buttons take equal width */
+        }
+
+        .zone-button.active {
+            background-color: var(--zone-button-active-bg);
+            box-shadow: 0 0 8px var(--button-shadow-color);
+        }
+
+        .zone-button:hover:not(.active) {
+            filter: brightness(1.2); /* Slightly brighter on hover if not active */
+        }
+
+        .container {
+            background-color: var(--container-bg);
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            max-width: 600px;
+            width: 95%;
+            text-align: center;
+            margin: 1rem auto;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .map-image {
+            border-radius: 0.5rem;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 10px var(--button-shadow-color); /* Use button shadow color */
+            transition: box-shadow 0.3s ease;
+        }
+
+        /* Styling for individual location items */
+        .location-item {
+            background-color: var(--location-item-bg);
+            border-left: 5px solid var(--location-item-border);
+            box-shadow: 0 0 10px var(--button-shadow-color);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.25rem;
+            text-align: left;
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .location-item h3 {
+            font-size: 1.25rem;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .location-item p {
+            font-size: 0.9rem;
+            color: var(--location-text-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Button styling */
+        .button-styled {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: linear-gradient(90deg, var(--button-gradient-start), var(--button-gradient-end));
+            border: 2px solid var(--button-border-color);
+            text-shadow: 1px 1px #000;
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem;
+            border-radius: 0.25rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px var(--button-shadow-color);
+            cursor: pointer;
+        }
+
+        .button-styled:hover {
+            background: linear-gradient(90deg, var(--button-hover-gradient-start), var(--button-hover-gradient-end));
+            box-shadow: 0 0 15px var(--button-hover-shadow-color);
+            transform: translateY(-2px);
+        }
+
+        .zone-heading {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: var(--zone-heading-color);
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            border-bottom: 2px solid var(--zone-heading-color);
+            padding-bottom: 0.5rem;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .no-results-message {
+            color: var(--no-results-color);
+            font-weight: bold;
+            margin-top: 1.5rem;
+            text-align: center;
+            display: none;
+        }
+
+        /* Footer styles */
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: var(--header-bg); /* Matching header background */
+            color: var(--text-color);
+            text-align: center;
+            padding: 0.75rem;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .robot-emoji {
+            display: inline-block;
+            animation: jump 1s infinite alternate; /* Apply jump animation */
+        }
+
+        @keyframes jump {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Responsive adjustments */
+        /* For screens smaller than 768px (common tablet breakpoint) */
+        @media (max-width: 768px) {
+            body {
+                /* Adjusted padding-top to ensure content is not hidden under fixed header */
+                padding-top: 12rem; /* Reduced padding as geolocation status is removed */
+            }
+            header {
+                flex-direction: column; /* Stack header items vertically */
+                padding-bottom: 1rem; /* Add some padding at the bottom of the header */
+                height: auto; /* Allow header height to adjust based on content */
+            }
+            header h1 {
+                font-size: 1.8rem; /* Slightly smaller title for tablets */
+                margin-bottom: 0.25rem;
+            }
+            .search-bar-container, .zone-selector-container {
+                width: 95%; /* Make search bar and zone selector wider */
+                max-width: none; /* Remove max-width constraint */
+                flex-wrap: wrap; /* Allow items to wrap if needed */
+                justify-content: center; /* Center items when wrapped */
+            }
+            .search-input-wrapper {
+                flex-basis: 100%; /* Input wrapper takes full width */
+                margin-bottom: 0.5rem; /* Space below input before search button */
+            }
+            .clear-search-button {
+                right: 0.5rem; /* Keep clear button inside input */
+                font-size: 1rem;
+            }
+            .search-icon-inside { /* Adjust icon position in mobile */
+                right: 0.5rem;
+                font-size: 1rem;
+            }
+            .theme-toggle-button {
+                position: absolute; /* Keep it absolutely positioned for flexibility */
+                top: 0.5rem; /* Adjust top position */
+                right: 0.5rem; /* Adjust right position */
+                font-size: 1.5rem; /* Smaller emoji for smaller screens */
+            }
+            .zone-button {
+                padding: 0.4rem 0.8rem; /* Smaller padding for zone buttons */
+                font-size: 0.9rem; /* Smaller font size for zone buttons */
+                flex: 1; /* Ensure they share space equally */
+            }
+            .container {
+                padding: 1rem; /* Smaller padding for main container */
+                margin: 0.5rem auto; /* Adjust margin */
+            }
+            .map-image {
+                margin-bottom: 1rem;
+            }
+            .location-item {
+                padding: 0.8rem;
+                margin-bottom: 0.8rem;
+            }
+            .location-item h3 {
+                font-size: 1.1rem; /* Smaller heading for location items */
+            }
+            .location-item p {
+                font-size: 0.85rem; /* Smaller paragraph for location items */
+            }
+            footer {
+                font-size: 0.8rem;
+                padding: 0.5rem;
+            }
+        }
+
+        /* For screens smaller than 480px (common phone breakpoint) */
+        @media (max-width: 480px) {
+            body {
+                padding-top: 13rem; /* More padding for very small screens, adjusted */
+            }
+            header h1 {
+                font-size: 1.5rem; /* Even smaller title for phones */
+            }
+            .search-bar-container {
+                flex-direction: column; /* Stack search input and button vertically */
+                align-items: stretch; /* Stretch items to full width */
+            }
+            .search-input-wrapper {
+                margin-bottom: 0.5rem; /* Space between input and search button */
+            }
+            .zone-selector-container {
+                flex-wrap: nowrap; /* Prevent zone buttons from wrapping too much */
+                overflow-x: auto; /* Allow horizontal scrolling if buttons are too wide */
+                -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+                justify-content: flex-start; /* Align to start when scrolling */
+                padding-bottom: 0.5rem; /* Add padding for scrollbar if present */
+            }
+            .zone-button {
+                flex-shrink: 0; /* Prevent buttons from shrinking too much */
+                min-width: 80px; /* Ensure a minimum width for buttons */
+            }
+            .theme-toggle-button {
+                font-size: 1.2rem; /* Smaller emojis and text */
+                top: 0.25rem;
+                right: 0.25rem;
+            }
+            .container {
+                padding: 0.75rem;
+            }
+            .location-item {
+                padding: 0.7rem;
+            }
+            .location-item h3 {
+                font-size: 1rem;
+            }
+            .location-item p {
+                font-size: 0.8rem;
+            }
+            .button-styled {
+                padding: 0.6rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -18,9 +464,8 @@
             <div class="search-input-wrapper">
                 <input type="text" id="addressSearchInput" class="search-input" placeholder="Buscar dirección en la página...">
                 <button id="clearSearchButton" class="clear-search-button">✖️</button>
-                <span class="search-icon-inside">🔍</span> <!-- New magnifying glass icon -->
+                <span id="searchIconInside" class="search-icon-inside">🔍</span> <!-- Magnifying glass icon inside input -->
             </div>
-            <!-- Removed: <button id="searchAddressButton" class="search-button">Buscar 🔍</button> -->
         </div>
         <div class="zone-selector-container">
             <button id="showZone1Button" class="zone-button active" data-zone="1">Zona 1</button>
@@ -29,7 +474,7 @@
         <button id="themeToggleButton" class="theme-toggle-button" aria-label="Alternar modo día/noche">
             🌙
         </button>
-        <!-- Removed: <div id="geolocationStatus" class="geolocation-status">Obteniendo ubicación... 🌍</div> -->
+        <!-- Geolocation status is no longer displayed in the UI -->
     </header>
 
     <div class="container" id="mainContentContainer">
@@ -39,7 +484,7 @@
 
         <!-- Image of the Port of Valencia -->
         <img
-            src="img/puertoValencia.png"
+            src="uploaded:puertoValencia.jpg-8b818dc5-2ff2-4006-8acb-d9d0b0b3ccca3"
             alt="Mapa del Puerto de Valencia"
             class="map-image"
             onerror="this.onerror=null;this.src='https://placehold.co/600x350/1e1e1e/e6f0ff?text=Imagen+no+disponible';"
@@ -184,7 +629,7 @@
                 </button>
             </div>
 
-            <!-- Location Item: Muelles de Cruceros - MOVED TO ZONA 1 -->
+            <!-- Location Item: Muelles de Cruceros -->
             <div class="location-item" data-lat="39.4540" data-lng="-0.3270" data-zone="1">
                 <h3>Muelles de Cruceros 🛳️</h3>
                 <p>📍 Zona dedicada al atraque de cruceros turísticos.</p>
@@ -294,7 +739,237 @@
         <span class="robot-emoji">&#129302;</span> <!-- Robot emoji -->
     </footer>
 
-    <!-- Link to external JavaScript file -->
-    <script src="js/script.js"></script>
+    <script>
+        // Global variables for user's location
+        let userLat = null;
+        let userLng = null;
+        let currentZone = '1'; // Default to Zone 1
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const openMapsButtons = document.querySelectorAll('.open-maps-btn');
+            const addressSearchInput = document.getElementById('addressSearchInput');
+            const clearSearchButton = document.getElementById('clearSearchButton');
+            const searchIconInside = document.getElementById('searchIconInside'); // Get the search icon
+            const allLocationItems = document.querySelectorAll('.location-item');
+            const noResultsMessage = document.getElementById('noResultsMessage');
+            const zoneHeadings = document.querySelectorAll('.zone-heading');
+            const themeToggleButton = document.getElementById('themeToggleButton');
+            const body = document.body;
+            const ubicacionesDestacadasTitle = document.getElementById('ubicacionesDestacadasTitle');
+            const mainMapImage = document.getElementById('mainMapImage');
+            const mainContentContainer = document.getElementById('mainContentContainer');
+            const showZone1Button = document.getElementById('showZone1Button');
+            const showZone2Button = document.getElementById('showZone2Button');
+
+            // Function to request geolocation permission
+            function requestGeolocation() {
+                if (navigator.geolocation) {
+                    console.log('Solicitando ubicación...');
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            userLat = position.coords.latitude;
+                            userLng = position.coords.longitude;
+                            console.log('Ubicación obtenida:', userLat, userLng);
+                        },
+                        function(error) {
+                            console.error('Error al obtener ubicación:', error);
+                            let errorMessage = 'Ubicación no disponible.';
+                            switch(error.code) {
+                                case error.PERMISSION_DENIED:
+                                    errorMessage = 'Permiso de ubicación denegado.';
+                                    break;
+                                case error.POSITION_UNAVAILABLE:
+                                    errorMessage = 'Información de ubicación no disponible.';
+                                    break;
+                                case error.TIMEOUT:
+                                    errorMessage = 'Tiempo de espera agotado al obtener ubicación.';
+                                    break;
+                                case error.UNKNOWN_ERROR:
+                                    errorMessage = `Error desconocido: ${error.message || ''}.`;
+                                    break;
+                            }
+                            console.error('Mensaje de error de geolocalización:', errorMessage);
+                        },
+                        {
+                            enableHighAccuracy: true, // Request high accuracy
+                            timeout: 10000,          // 10 seconds timeout
+                            maximumAge: 0            // No cached position
+                        }
+                    );
+                } else {
+                    console.warn('Navegador no soporta geolocalización');
+                }
+            }
+
+            // Function to open Google Maps for directions
+            function openGoogleMapsDirections(destinationLat, destinationLng) {
+                const destinationQuery = `${destinationLat},${destinationLng}`;
+                const googleMapsUrl = `https://www.google.es/maps/dir/?api=1&destination=${encodeURIComponent(destinationQuery)}`;
+                window.open(googleMapsUrl, '_blank');
+            }
+
+            // Function to filter locations based on search input and current zone
+            function filterLocations() {
+                const searchTerm = addressSearchInput.value.trim().toLowerCase();
+                let resultsFound = false;
+                
+                // Hide "Ubicaciones Destacadas" title and main map image always when filtering
+                ubicacionesDestacadasTitle.style.display = 'none';
+                mainMapImage.style.display = 'none';
+
+                // Hide all location items and zone headings first
+                allLocationItems.forEach(item => {
+                    item.style.display = 'none';
+                });
+                zoneHeadings.forEach(heading => {
+                    heading.style.display = 'none';
+                });
+
+                if (searchTerm === "") {
+                    // If search term is empty, show only items and heading for the currentZone
+                    ubicacionesDestacadasTitle.style.display = 'block'; // Show title when no search
+                    mainMapImage.style.display = 'block'; // Show map when no search
+
+                    zoneHeadings.forEach(heading => {
+                        if (heading.dataset.zone === currentZone) {
+                            heading.style.display = 'block';
+                        }
+                    });
+                    allLocationItems.forEach(item => {
+                        if (item.dataset.zone === currentZone) {
+                            item.style.display = 'block';
+                            resultsFound = true; // Mark as found if items in current zone are shown
+                        }
+                    });
+
+                } else {
+                    // Iterate through location items and show matches, and their zone heading
+                    allLocationItems.forEach(item => {
+                        const title = item.querySelector('h3').textContent.toLowerCase();
+                        
+                        // Use regex for whole word match or word start match
+                        const regex = new RegExp('\\b' + searchTerm, 'i'); 
+
+                        if (regex.test(title)) { // Only search in title using regex
+                            item.style.display = 'block';
+                            resultsFound = true;
+
+                            // Find the preceding zone heading and display it
+                            let previousSibling = item.previousElementSibling;
+                            while (previousSibling) {
+                                if (previousSibling.classList.contains('zone-heading')) {
+                                    previousSibling.style.display = 'block';
+                                    break; // Found the zone heading, stop
+                                }
+                                previousSibling = previousSibling.previousElementSibling;
+                            }
+                        }
+                    });
+                }
+
+                if (resultsFound) {
+                    noResultsMessage.style.display = 'none';
+                } else {
+                    noResultsMessage.style.display = 'block';
+                }
+
+                // Show/hide clear button and search icon based on input content
+                if (searchTerm.length > 0) {
+                    clearSearchButton.style.display = 'block';
+                    searchIconInside.style.display = 'none'; // Hide magnifying glass
+                } else {
+                    clearSearchButton.style.display = 'none';
+                    searchIconInside.style.display = 'block'; // Show magnifying glass
+                }
+
+                // Scroll the main content container to the top to show results
+                if (searchTerm !== "") { // Only scroll if a search term is present
+                    mainContentContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                
+                addressSearchInput.focus(); // Keep focus on the search input
+            }
+
+            // Function to toggle theme (day/night mode)
+            function toggleTheme() {
+                if (body.classList.contains('day-mode')) {
+                    body.classList.remove('day-mode');
+                    themeToggleButton.textContent = '🌙';
+                    localStorage.setItem('theme', 'night');
+                } else {
+                    body.classList.add('day-mode');
+                    themeToggleButton.textContent = '☀️';
+                    localStorage.setItem('theme', 'day');
+                }
+            }
+
+            // Event listener for the specific location buttons
+            openMapsButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const locationItem = this.closest('.location-item');
+                    const latitude = parseFloat(locationItem.getAttribute('data-lat'));
+                    const longitude = parseFloat(locationItem.getAttribute('data-lng'));
+
+                    if (!isNaN(latitude) && !isNaN(longitude)) {
+                        openGoogleMapsDirections(latitude, longitude); // Use new directions function
+                    } else {
+                        console.error('Error: Latitud o longitud no válidas para esta ubicación.');
+                    }
+                });
+            });
+
+            // Event listener for the clear search button
+            clearSearchButton.addEventListener('click', function() {
+                addressSearchInput.value = ''; // Clear the input
+                filterLocations(); // Re-filter to show all items
+            });
+
+            // Allow filtering by pressing Enter in the input field
+            addressSearchInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    filterLocations();
+                }
+            });
+
+            // Also filter as the user types and control clear button visibility
+            addressSearchInput.addEventListener('input', filterLocations);
+
+            // Event listener for theme toggle button
+            themeToggleButton.addEventListener('click', toggleTheme);
+
+            // Event listeners for zone buttons
+            showZone1Button.addEventListener('click', () => {
+                currentZone = '1';
+                showZone1Button.classList.add('active');
+                showZone2Button.classList.remove('active');
+                filterLocations();
+            });
+
+            showZone2Button.addEventListener('click', () => {
+                currentZone = '2';
+                showZone2Button.classList.add('active');
+                showZone1Button.classList.remove('active');
+                filterLocations();
+            });
+
+
+            // Initial theme application on page load
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'day') {
+                body.classList.add('day-mode');
+                themeToggleButton.textContent = '☀️';
+            } else {
+                // Default to night mode if no preference or preference is 'night'
+                body.classList.remove('day-mode');
+                themeToggleButton.textContent = '🌙';
+            }
+
+            // Request geolocation on page load
+            requestGeolocation();
+
+            // Initial filter call to ensure correct display on load (shows default zone)
+            filterLocations();
+        });
+    </script>
 </body>
 </html>
