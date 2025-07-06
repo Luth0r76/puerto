@@ -8,17 +8,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
- <link rel="stylesheet" href="css/styles.css">
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="css/styles.css"> 
 </head>
 <body>
     <header>
         <h1>📍 <b>Puerto de Valencia</b> ⚓</h1>
         <div class="search-bar-container">
             <div class="search-input-wrapper">
-                <input type="text" id="addressSearchInput" class="search-input" placeholder="Buscar dirección en la página...">
+                <input type="text" id="addressSearchInput" class="search-input" placeholder="Buscar dirección...">
                 <button id="clearSearchButton" class="clear-search-button">✖️</button>
             </div>
-            <button id="searchAddressButton" class="search-button">Buscar 🔍</button>
+            <button id="searchAddressButton" class="search-button">🔍</button>
         </div>
         <div class="zone-selector-container">
             <button id="showZone1Button" class="zone-button active" data-zone="1">Zona 1</button>
@@ -184,6 +185,15 @@
                 </button>
             </div>
 
+            <!-- Location Item: Muelles de Cruceros - MOVED TO ZONA 1 -->
+            <div class="location-item" data-lat="39.4540" data-lng="-0.3270" data-zone="1">
+                <h3>Muelles de Cruceros 🛳️</h3>
+                <p>📍 Zona dedicada al atraque de cruceros turísticos.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Muelles de Cruceros en Google Maps">
+                    Ir a Muelles de Cruceros 🗺️
+                </button>
+            </div>
+
             <h3 class="zone-heading" data-zone="2">Zona 2: Corazón del Puerto y Sur</h3>
 
             <!-- Location Item: Muelle Príncipe Felipe -->
@@ -210,15 +220,6 @@
                 <p>📍 Ubicado cerca de la desembocadura del río Turia, con la terminal de Balearia.</p>
                 <button class="button-styled open-maps-btn" aria-label="Abrir Muelle del Turia en Google Maps">
                     Ir al Muelle del Turia 🗺️
-                </button>
-            </div>
-
-            <!-- Location Item: Muelles de Cruceros -->
-            <div class="location-item" data-lat="39.4540" data-lng="-0.3270" data-zone="2">
-                <h3>Muelles de Cruceros 🛳️</h3>
-                <p>📍 Zona dedicada al atraque de cruceros turísticos.</p>
-                <button class="button-styled open-maps-btn" aria-label="Abrir Muelles de Cruceros en Google Maps">
-                    Ir a Muelles de Cruceros 🗺️
                 </button>
             </div>
 
@@ -294,6 +295,7 @@
         <span class="robot-emoji">&#129302;</span> <!-- Robot emoji -->
     </footer>
 
-   <script src="js/script.js"></script>
+    <!-- Link to external JavaScript file -->
+    <script src="js/script.js"></script>
 </body>
 </html>
