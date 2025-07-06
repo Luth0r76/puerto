@@ -1,0 +1,343 @@
+        /* Define CSS Variables for themes */
+        :root {
+            /* Night Mode Colors (Default) */
+            --bg-color: #0a0f1c;
+            --text-color: #e6f0ff;
+            --header-bg: #001f3f;
+            --header-border: #0074D9;
+            --container-bg: #1e1e1e;
+            --location-item-bg: #1a1a1a;
+            --location-item-border: #0074D9;
+            --location-text-color: #bbb;
+            --button-gradient-start: #0074D9;
+            --button-gradient-end: #001f3f;
+            --button-border-color: #0074D9;
+            --button-shadow-color: rgba(0, 116, 217, 0.3);
+            --button-hover-gradient-start: #ff4136;
+            --button-hover-gradient-end: #85144b;
+            --button-hover-shadow-color: #ff4136;
+            --zone-heading-color: #0074D9;
+            --no-results-color: #ff4136;
+            --clear-button-color: #bbb;
+            --clear-button-hover-color: #e6f0ff;
+            --geolocation-status-color: #0074D9;
+            --zone-button-bg: #003366; /* Darker blue for inactive zone buttons */
+            --zone-button-active-bg: #0074D9; /* Brighter blue for active zone button */
+        }
+
+        /* Day Mode Colors */
+        body.day-mode {
+            --bg-color: #f0f4f8; /* Light blue-gray */
+            --text-color: #1a1a1a; /* Dark text */
+            --header-bg: #60a5fa; /* Lighter blue */
+            --header-border: #3b82f6;
+            --container-bg: #f8fafc; /* Light gray */
+            --location-item-bg: #edf2f7; /* Slightly darker light gray */
+            --location-item-border: #3b82f6;
+            --location-text-color: #4a5568; /* Darker gray for description */
+            --button-gradient-start: #3b82f6;
+            --button-gradient-end: #2563eb;
+            --button-border-color: #3b82f6;
+            --button-shadow-color: rgba(59, 130, 246, 0.3);
+            --button-hover-gradient-start: #ef4444;
+            --button-hover-gradient-end: #dc2626;
+            --button-hover-shadow-color: #ef4444;
+            --zone-heading-color: #2563eb;
+            --no-results-color: #ef4444;
+            --clear-button-color: #4a5568;
+            --clear-button-hover-color: #1a1a1a;
+            --geolocation-status-color: #2563eb;
+            --zone-button-bg: #93c5fd; /* Light blue for inactive zone buttons */
+            --zone-button-active-bg: #3b82f6; /* Brighter blue for active zone button */
+        }
+
+        /* Global styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding-bottom: 4rem; /* Add padding for the fixed footer */
+            padding-top: 13rem; /* Adjusted padding for the fixed header + zone buttons */
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
+        }
+
+        /* Header styling */
+        header {
+            background-color: var(--header-bg);
+            color: var(--text-color);
+            border-bottom: 3px solid var(--header-border);
+            text-align: center;
+            padding: 1rem;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            position: fixed; /* Make header fixed */
+            top: 0;
+            left: 0;
+            z-index: 1000; /* Ensure it stays on top */
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .search-bar-container {
+            display: flex;
+            gap: 0.5rem;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-input-wrapper { /* New wrapper for input and clear button */
+            position: relative;
+            flex-grow: 1;
+        }
+
+        .search-input {
+            width: 100%; /* Take full width of its wrapper */
+            padding: 0.6rem 1rem;
+            padding-right: 2.5rem; /* Space for clear button */
+            border-radius: 0.25rem;
+            border: 2px solid var(--button-border-color);
+            background-color: var(--location-item-bg); /* Use location item bg for input */
+            color: var(--text-color);
+            font-size: 1rem;
+            outline: none;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: var(--location-text-color);
+        }
+
+        .search-button {
+            background: linear-gradient(90deg, var(--button-gradient-start), var(--button-gradient-end));
+            border: 2px solid var(--button-border-color);
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: 0.25rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 0 5px var(--button-shadow-color);
+        }
+
+        .search-button:hover {
+            background: linear-gradient(90deg, var(--button-hover-gradient-start), var(--button-hover-gradient-end));
+            box-shadow: 0 0 10px var(--button-hover-shadow-color);
+            transform: translateY(-1px);
+        }
+
+        .clear-search-button {
+            position: absolute;
+            right: 0.5rem; /* Position inside the input field */
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--clear-button-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 0.2rem; /* Smaller padding for a tighter fit */
+            display: none; /* Hidden by default */
+            transition: color 0.3s ease;
+        }
+
+        .clear-search-button:hover {
+            color: var(--clear-button-hover-color);
+        }
+
+        .theme-toggle-button {
+            background: none;
+            border: none;
+            font-size: 1.8rem; /* Larger emoji */
+            cursor: pointer;
+            color: var(--text-color); /* Use text color for emoji */
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .theme-toggle-button:hover {
+            transform: scale(1.1);
+        }
+
+        .geolocation-status {
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            font-size: 0.9rem;
+            color: var(--geolocation-status-color);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .zone-selector-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem; /* Space below search bar */
+            width: 90%;
+            max-width: 400px;
+            justify-content: center;
+        }
+
+        .zone-button {
+            background-color: var(--zone-button-bg);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: 2px solid var(--header-border);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .zone-button.active {
+            background-color: var(--zone-button-active-bg);
+            box-shadow: 0 0 8px var(--button-shadow-color);
+        }
+
+        .zone-button:hover:not(.active) {
+            filter: brightness(1.2); /* Slightly brighter on hover if not active */
+        }
+
+        .container {
+            background-color: var(--container-bg);
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            max-width: 600px;
+            width: 95%;
+            text-align: center;
+            margin: 1rem auto;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .map-image {
+            border-radius: 0.5rem;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 10px var(--button-shadow-color); /* Use button shadow color */
+            transition: box-shadow 0.3s ease;
+        }
+
+        /* Styling for individual location items */
+        .location-item {
+            background-color: var(--location-item-bg);
+            border-left: 5px solid var(--location-item-border);
+            box-shadow: 0 0 10px var(--button-shadow-color);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.25rem;
+            text-align: left;
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .location-item h3 {
+            font-size: 1.25rem;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .location-item p {
+            font-size: 0.9rem;
+            color: var(--location-text-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Button styling */
+        .button-styled {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: linear-gradient(90deg, var(--button-gradient-start), var(--button-gradient-end));
+            border: 2px solid var(--button-border-color);
+            text-shadow: 1px 1px #000;
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem;
+            border-radius: 0.25rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px var(--button-shadow-color);
+            cursor: pointer;
+        }
+
+        .button-styled:hover {
+            background: linear-gradient(90deg, var(--button-hover-gradient-start), var(--button-hover-gradient-end));
+            box-shadow: 0 0 15px var(--button-hover-shadow-color);
+            transform: translateY(-2px);
+        }
+
+        .zone-heading {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: var(--zone-heading-color);
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            border-bottom: 2px solid var(--zone-heading-color);
+            padding-bottom: 0.5rem;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .no-results-message {
+            color: var(--no-results-color);
+            font-weight: bold;
+            margin-top: 1.5rem;
+            text-align: center;
+            display: none;
+        }
+
+        /* Footer styles */
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: var(--header-bg); /* Matching header background */
+            color: var(--text-color);
+            text-align: center;
+            padding: 0.75rem;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .robot-emoji {
+            display: inline-block;
+            animation: jump 1s infinite alternate; /* Apply jump animation */
+        }
+
+        @keyframes jump {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+    

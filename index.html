@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puerto de Valencia - Ubicaciones por Zonas</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>📍 <b>Puerto de Valencia</b> ⚓</h1>
+        <div class="search-bar-container">
+            <div class="search-input-wrapper">
+                <input type="text" id="addressSearchInput" class="search-input" placeholder="Buscar dirección en la página...">
+                <button id="clearSearchButton" class="clear-search-button">✖️</button>
+            </div>
+            <button id="searchAddressButton" class="search-button">Buscar 🔍</button>
+        </div>
+        <div class="zone-selector-container">
+            <button id="showZone1Button" class="zone-button active" data-zone="1">Zona 1</button>
+            <button id="showZone2Button" class="zone-button" data-zone="2">Zona 2</button>
+        </div>
+        <button id="themeToggleButton" class="theme-toggle-button" aria-label="Alternar modo día/noche">
+            🌙
+        </button>
+        <div id="geolocationStatus" class="geolocation-status">
+            Obteniendo ubicación... 🌍
+        </div>
+    </header>
+
+    <div class="container" id="mainContentContainer">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-6" id="ubicacionesDestacadasTitle">
+            Ubicaciones Destacadas
+        </h2>
+
+        <!-- Image of the Port of Valencia -->
+        <img
+            src="img/puertoValencia.png"
+            alt="Mapa del Puerto de Valencia"
+            class="map-image"
+            onerror="this.onerror=null;this.src='https://placehold.co/600x350/1e1e1e/e6f0ff?text=Imagen+no+disponible';"
+            id="mainMapImage"
+        >
+
+        <div id="locations-list">
+            <h3 class="zone-heading" data-zone="1">Zona 1: Acceso Norte, Este Exterior y Servicios</h3>
+
+            <!-- Location Item: Aduanas -->
+            <div class="location-item" data-lat="39.4715" data-lng="-0.3395" data-zone="1">
+                <h3>Aduanas 🛂</h3>
+                <p>📍 Oficina de aduanas del Puerto de Valencia.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Aduanas en Google Maps">
+                    Ir a Aduanas 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Muelle Norte -->
+            <div class="location-item" data-lat="39.4700" data-lng="-0.3250" data-zone="1">
+                <h3>Muelle Norte ⬆️</h3>
+                <p>📍 Zona de carga y descarga de contenedores y mercancías.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Muelle Norte en Google Maps">
+                    Ir al Muelle Norte 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Marina Real Juan Carlos I -->
+            <div class="location-item" data-lat="39.4697" data-lng="-0.3761" data-zone="1">
+                <h3>Marina Real Juan Carlos I ⛵</h3>
+                <p>📍 Área recreativa y deportiva, sede de eventos náuticos.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Marina Real Juan Carlos I en Google Maps">
+                    Ir a la Marina Real 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Muelle de Levante (APM Terminals) -->
+            <div class="location-item" data-lat="39.453428" data-lng="-0.319516" data-zone="1">
+                <h3>Muelle de Levante (APM Terminals) 🌅</h3>
+                <p>📍 Muelle situado al este, importante para diversas operaciones portuarias y sede de APM Terminals.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Muelle de Levante en Google Maps">
+                    Ir al Muelle de Levante 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Dique del Este -->
+            <div class="location-item" data-lat="39.440127" data-lng="-0.304894" data-zone="1">
+                <h3>Dique del Este ➡️</h3>
+                <p>📍 Estructura de protección y área de atraque en la zona este.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Dique del Este en Google Maps">
+                    Ir al Dique del Este 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Estación Marítima -->
+            <div class="location-item" data-lat="39.4580" data-lng="-0.3320" data-zone="1">
+                <h3>Estación Marítima 🚉</h3>
+                <p>📍 Edificio principal para pasajeros y servicios portuarios.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Estación Marítima en Google Maps">
+                    Ir a la Estación Marítima 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Puesto Fronterizo (General Port Area) -->
+            <div class="location-item" data-lat="39.4440" data-lng="-0.3220" data-zone="1">
+                <h3>Puesto Fronterizo 🛂</h3>
+                <p>📍 Punto de control de aduanas y fronteras dentro del puerto.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Puesto Fronterizo en Google Maps">
+                    Ir al Puesto Fronterizo 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Amarradores del Puerto de Valencia -->
+            <div class="location-item" data-lat="39.4670" data-lng="-0.3320" data-zone="1">
+                <h3>Amarradores del Puerto de Valencia 🔗</h3>
+                <p>📍 Ubicación de la oficina principal de los servicios de amarre.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Amarradores del Puerto de Valencia en Google Maps">
+                    Ir a Amarradores 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Remolcadores del Puerto de Valencia -->
+            <div class="location-item" data-lat="39.4440" data-lng="-0.3220" data-zone="1">
+                <h3>Remolcadores del Puerto de Valencia 🛥️</h3>
+                <p>📍 Zona general de operación de los remolcadores del puerto.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Remolcadores del Puerto de Valencia en Google Maps">
+                    Ir a Remolcadores 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: GNC Terminal (TEPSA) -->
+            <div class="location-item" data-lat="39.445654" data-lng="-0.304197" data-zone="1">
+                <h3>GNC Terminal (TEPSA) ⛽</h3>
+                <p>📍 Terminal de Gas Natural Comprimido, operada por TEPSA.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir GNC Terminal en Google Maps">
+                    Ir a GNC Terminal 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Terminal Grimaldi -->
+            <div class="location-item" data-lat="39.4582" data-lng="-0.3185" data-zone="1">
+                <h3>Terminal Grimaldi 🚢</h3>
+                <p>📍 Terminal de carga y pasajeros de Grimaldi Group.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Terminal Grimaldi en Google Maps">
+                    Ir a Terminal Grimaldi 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Muelle Poniente -->
+            <div class="location-item" data-lat="39.454581" data-lng="-0.324918" data-zone="1">
+                <h3>Muelle Poniente 🌇</h3>
+                <p>📍 Muelle en la parte oeste del puerto, con actividad comercial.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Muelle Poniente en Google Maps">
+                    Ir al Muelle Poniente 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Muelle Transversales -->
+            <div class="location-item" data-lat="39.457053" data-lng="-0.325145" data-zone="1">
+                <h3>Muelle Transversales ↔️</h3>
+                <p>📍 Muelle que cruza otras zonas, facilitando el tránsito de mercancías.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Muelle Transversales en Google Maps">
+                    Ir al Muelle Transversales 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Muelle Llobera -->
+            <div class="location-item" data-lat="39.448104" data-lng="-0.313281" data-zone="1">
+                <h3>Muelle Llobera ⚓</h3>
+                <p>📍 Muelle con operaciones diversas en la zona este.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Muelle Llobera en Google Maps">
+                    Ir al Muelle Llobera 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Muelle Transversal Dique del Este -->
+            <div class="location-item" data-lat="39.446148" data-lng="-0.310834" data-zone="1">
+                <h3>Muelle Transversal Dique del Este ➡️</h3>
+                <p>📍 Muelle transversal en la zona del Dique del Este.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Muelle Transversal Dique del Este en Google Maps">
+                    Ir al Muelle Transversal Dique del Este 🗺️
+                </button>
+            </div>
+
+            <h3 class="zone-heading" data-zone="2">Zona 2: Corazón del Puerto y Sur</h3>
+
+            <!-- Location Item: Muelle Príncipe Felipe -->
+            <div class="location-item" data-lat="39.4580" data-lng="-0.3200" data-zone="2">
+                <h3>Muelle Príncipe Felipe 👑</h3>
+                <p>📍 Punto principal de atraque para grandes buques y cruceros.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Muelle Príncipe Felipe en Google Maps">
+                    Ir al Muelle Príncipe Felipe 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Terminal de Contenedores -->
+            <div class="location-item" data-lat="39.4620" data-lng="-0.3280" data-zone="2">
+                <h3>Terminal de Contenedores 📦</h3>
+                <p>📍 Centro neurálgico para la logística de contenedores.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Terminal de Contenedores en Google Maps">
+                    Ir a la Terminal de Contenedores 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Muelle del Turia (Balearia Terminal) -->
+            <div class="location-item" data-lat="39.447764" data-lng="-0.325395" data-zone="2">
+                <h3>Muelle del Turia (Balearia Terminal) 🌊</h3>
+                <p>📍 Ubicado cerca de la desembocadura del río Turia, con la terminal de Balearia.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Muelle del Turia en Google Maps">
+                    Ir al Muelle del Turia 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Muelles de Cruceros -->
+            <div class="location-item" data-lat="39.4540" data-lng="-0.3270" data-zone="2">
+                <h3>Muelles de Cruceros 🛳️</h3>
+                <p>📍 Zona dedicada al atraque de cruceros turísticos.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Muelles de Cruceros en Google Maps">
+                    Ir a Muelles de Cruceros 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Real Club Náutico de Valencia -->
+            <div class="location-item" data-lat="39.4275" data-lng="-0.3322" data-zone="2">
+                <h3>Real Club Náutico de Valencia ⚓</h3>
+                <p>📍 Club deportivo y puerto para embarcaciones de recreo.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Real Club Náutico de Valencia en Google Maps">
+                    Ir al Club Náutico 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: MSC Terminal Valencia -->
+            <div class="location-item" data-lat="39.4582" data-lng="-0.3275" data-zone="2">
+                <h3>MSC Terminal Valencia 🚢</h3>
+                <p>📍 Terminal de contenedores operada por Mediterranean Shipping Company.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir MSC Terminal Valencia en Google Maps">
+                    Ir a MSC Terminal 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: CSP Iberian Valencia Terminal -->
+            <div class="location-item" data-lat="39.4580" data-lng="-0.3200" data-zone="2">
+                <h3>CSP Iberian Valencia Terminal 🏗️</h3>
+                <p>📍 Terminal de contenedores en el Muelle Príncipe Felipe.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir CSP Iberian Valencia Terminal en Google Maps">
+                    Ir a CSP Iberian Terminal 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Muelle Costa -->
+            <div class="location-item" data-lat="39.437708" data-lng="-0.329787" data-zone="2">
+                <h3>Muelle Costa 🏝️</h3>
+                <p>📍 Muelle situado en la zona sur, con diversas operaciones.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Muelle Costa en Google Maps">
+                    Ir al Muelle Costa 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Muelle Transversal Costa -->
+            <div class="location-item" data-lat="39.438973" data-lng="-0.323893" data-zone="2">
+                <h3>Muelle Transversal Costa ➡️🏝️</h3>
+                <p>📍 Muelle transversal en la zona sur del puerto.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Muelle Transversal Costa en Google Maps">
+                    Ir al Muelle Transversal Costa 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Muelle Sur -->
+            <div class="location-item" data-lat="39.445185" data-lng="-0.322760" data-zone="2">
+                <h3>Muelle Sur ⬇️</h3>
+                <p>📍 Muelle en la parte sur del puerto.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Muelle Sur en Google Maps">
+                    Ir al Muelle Sur 🗺️
+                </button>
+            </div>
+
+            <!-- Location Item: Muelle Perfecto Palacio -->
+            <div class="location-item" data-lat="39.451017" data-lng="-0.323673" data-zone="2">
+                <h3>Muelle Perfecto Palacio 🏛️</h3>
+                <p>📍 Muelle con nombre de edificio emblemático.</p>
+                <button class="button-styled open-maps-btn" aria-label="Abrir Muelle Perfecto Palacio en Google Maps">
+                    Ir al Muelle Perfecto Palacio 🗺️
+                </button>
+            </div>
+
+        </div>
+        <p id="noResultsMessage" class="no-results-message">No se encontraron resultados para tu búsqueda.</p>
+    </div>
+
+    <footer>
+        <span>© Jose Academy</span>
+        <span class="robot-emoji">&#129302;</span> <!-- Robot emoji -->
+    </footer>
+
+   <script src="js/script.js"></script>
+</body>
+</html>
