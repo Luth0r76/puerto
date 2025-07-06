@@ -6,7 +6,6 @@ let currentZone = '1'; // Default to Zone 1
 document.addEventListener('DOMContentLoaded', function() {
     const openMapsButtons = document.querySelectorAll('.open-maps-btn');
     const addressSearchInput = document.getElementById('addressSearchInput');
-    const searchAddressButton = document.getElementById('searchAddressButton');
     const clearSearchButton = document.getElementById('clearSearchButton');
     const allLocationItems = document.querySelectorAll('.location-item');
     const noResultsMessage = document.getElementById('noResultsMessage');
@@ -16,42 +15,39 @@ document.addEventListener('DOMContentLoaded', function() {
     const ubicacionesDestacadasTitle = document.getElementById('ubicacionesDestacadasTitle');
     const mainMapImage = document.getElementById('mainMapImage');
     const mainContentContainer = document.getElementById('mainContentContainer');
-    const geolocationStatus = document.getElementById('geolocationStatus');
+    // Removed geolocationStatus as it's no longer displayed in the UI
     const showZone1Button = document.getElementById('showZone1Button');
     const showZone2Button = document.getElementById('showZone2Button');
 
     // Function to request geolocation permission
     function requestGeolocation() {
         if (navigator.geolocation) {
-            geolocationStatus.textContent = 'Obteniendo ubicación... 🌍';
+            console.log('Solicitando ubicación...');
             navigator.geolocation.getCurrentPosition(
                 function(position) {
                     userLat = position.coords.latitude;
                     userLng = position.coords.longitude;
-                    geolocationStatus.textContent = 'Ubicación activada ✅';
-                    geolocationStatus.style.color = 'var(--geolocation-status-color)'; // Use theme color
-                    console.log('User location:', userLat, userLng);
+                    console.log('Ubicación obtenida:', userLat, userLng);
                 },
                 function(error) {
-                    // Improved error logging
+                    // Improved error logging for geolocation issues
                     console.error('Error al obtener ubicación:', error);
-                    let errorMessage = 'Ubicación no disponible ❌';
+                    let errorMessage = 'Ubicación no disponible.';
                     switch(error.code) {
                         case error.PERMISSION_DENIED:
-                            errorMessage = 'Permiso de ubicación denegado 🚫';
+                            errorMessage = 'Permiso de ubicación denegado.';
                             break;
                         case error.POSITION_UNAVAILABLE:
-                            errorMessage = 'Información de ubicación no disponible 📡';
+                            errorMessage = 'Información de ubicación no disponible.';
                             break;
                         case error.TIMEOUT:
-                            errorMessage = 'Tiempo de espera agotado al obtener ubicación ⏰';
+                            errorMessage = 'Tiempo de espera agotado al obtener ubicación.';
                             break;
                         case error.UNKNOWN_ERROR:
-                            errorMessage = `Error desconocido: ${error.message || ''} ❓`;
+                            errorMessage = `Error desconocido: ${error.message || ''}.`;
                             break;
                     }
-                    geolocationStatus.textContent = errorMessage;
-                    geolocationStatus.style.color = 'var(--no-results-color)'; // Use error color
+                    console.error('Mensaje de error de geolocalización:', errorMessage);
                 },
                 {
                     enableHighAccuracy: true, // Request high accuracy
@@ -60,8 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             );
         } else {
-            geolocationStatus.textContent = 'Geolocalización no soportada 🚫';
-            geolocationStatus.style.color = 'var(--no-results-color)'; // Use error color
             console.warn('Navegador no soporta geolocalización');
         }
     }
@@ -181,8 +175,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Event listener for the general address search button
-    searchAddressButton.addEventListener('click', filterLocations);
+    // The search is now triggered by the 'input' event on the text field, or 'keypress' (Enter)
+    // Removed: searchAddressButton.addEventListener('click', filterLocations);
 
     // Event listener for the clear search button
     clearSearchButton.addEventListener('click', function() {

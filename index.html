@@ -16,10 +16,11 @@
         <h1>📍 <b>Puerto de Valencia</b> ⚓</h1>
         <div class="search-bar-container">
             <div class="search-input-wrapper">
-                <input type="text" id="addressSearchInput" class="search-input" placeholder="Buscar dirección...">
+                <input type="text" id="addressSearchInput" class="search-input" placeholder="Buscar dirección en la página...">
                 <button id="clearSearchButton" class="clear-search-button">✖️</button>
+                <span class="search-icon-inside">🔍</span> <!-- New magnifying glass icon -->
             </div>
-            <button id="searchAddressButton" class="search-button">🔍</button>
+            <!-- Removed: <button id="searchAddressButton" class="search-button">Buscar 🔍</button> -->
         </div>
         <div class="zone-selector-container">
             <button id="showZone1Button" class="zone-button active" data-zone="1">Zona 1</button>
@@ -28,9 +29,7 @@
         <button id="themeToggleButton" class="theme-toggle-button" aria-label="Alternar modo día/noche">
             🌙
         </button>
-        <div id="geolocationStatus" class="geolocation-status">
-            Obteniendo ubicación... 🌍
-        </div>
+        <!-- Removed: <div id="geolocationStatus" class="geolocation-status">Obteniendo ubicación... 🌍</div> -->
     </header>
 
     <div class="container" id="mainContentContainer">
