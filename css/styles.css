@@ -69,7 +69,8 @@ body {
     justify-content: flex-start;
     min-height: 100vh;
     padding-bottom: 4rem; /* Add padding for the fixed footer */
-    padding-top: 13rem; /* Adjusted padding for the fixed header + zone buttons */
+    /* Base padding-top for larger screens, adjusted in media queries */
+    padding-top: 10rem; 
     transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
 }
 
@@ -346,8 +347,8 @@ footer {
 /* For screens smaller than 768px (common tablet breakpoint) */
 @media (max-width: 768px) {
     body {
-        /* Adjust padding-top to accommodate fixed header that might wrap */
-        padding-top: 15rem; /* Increased padding to prevent content from being hidden */
+        /* Adjusted padding-top to ensure content is not hidden under fixed header */
+        padding-top: 15rem; 
     }
     header {
         flex-direction: column; /* Stack header items vertically */
@@ -388,6 +389,7 @@ footer {
         top: 0.5rem; /* Adjust top position */
         left: 0.5rem; /* Adjust left position */
         font-size: 0.8rem; /* Smaller font size */
+        margin-top: 0.5rem; /* Added margin for spacing */
     }
     .zone-button {
         padding: 0.4rem 0.8rem; /* Smaller padding for zone buttons */
